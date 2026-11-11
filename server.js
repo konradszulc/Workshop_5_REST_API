@@ -33,10 +33,10 @@ async function connectToDatabase() {
   app.use(express.json());
   app.use(express.static(publicDir));
 
-  // TODO: Complete the page routes in routes/pages.js.
+  // TODO: Complete the page routes in routes/pages.js. (completed)
   app.use('/', pagesRouter);
 
-  // TODO: Complete the API routes in routes/posts.js.
+  // TODO: Complete the API routes in routes/posts.js. (completed)
   app.use('/api/posts', postsRouter);
 
   app.use((req, res) => {
