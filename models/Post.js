@@ -1,15 +1,14 @@
 const mongoose = require('mongoose');
 
+//A mongoose Schema for Post Model
 const postSchema = new mongoose.Schema(
   {
-    // TODO (student): Define the post fields for this schema.
-    // Suggested minimum fields:
-    // - title: String, required, trim
-    // - content: String, required, trim
-    // - author: String, required, trim
+    title: { type: String, Required: true, Trim: true },
+    content: { type: String, Required: true, Trim: true },
+    author: { type: String, Required: true, trim: true }
   },
   {
-    // TODO (student): Keep timestamps enabled (or decide based on requirements).
+    // this adds createAt and updatedAT fields to the schema
     timestamps: true
   }
 );

@@ -172,8 +172,8 @@ Your solution will be considered complete if:
 - [ ] CRUD endpoints work correctly
 - [ ] MongoDB data is persisted
 - [ ] Code is pushed to GitHub
-- [ ] Repository does not contain `node_modules`
-- [ ] Repository does not contain `.env`
+- [X] Repository does not contain `node_modules`
+- [X] Repository does not contain `.env`
 
 ---
 
