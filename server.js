@@ -10,39 +10,54 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 const publicDir = path.join(__dirname, 'public');
 
+//Async funciton to connect to MongoDB using Mongoose 
 async function connectToDatabase() {
-  // TODO (student): Connect to MongoDB using mongoose.
-  // Suggested steps:
-  // 1) Check that process.env.MONGODB_URI exists.
-  // 2) Call mongoose.connect(process.env.MONGODB_URI, { dbName: 'blog' }).
-  // 3) Log success and handle possible errors.
-  console.log('TODO: implement connectToDatabase()');
+  try {
+    if (!process.env.MONGODB_URI) {
+      throw new Error('MONGODB_URI is not found in .env file');
+    }
+
+    await mongoose.connect(process.env.MONGODB_URI, {
+      dbName: 'Blog'
+    });
+
+    console.log('Connected to MongoDB: Blog');
+  } catch (error) {
+    console.error('Failed to connect to MongoDB:', error.message);
+    throw error;
+
+  }
 }
 
-app.locals.publicDir = publicDir;
-app.use(express.json());
-app.use(express.static(publicDir));
+  app.locals.publicDir = publicDir;
+  app.use(express.json());
+  app.use(express.static(publicDir));
 
-// TODO: Complete the page routes in routes/pages.js.
-app.use('/', pagesRouter);
+  // TODO: Complete the page routes in routes/pages.js.
+  app.use('/', pagesRouter);
 
-// TODO: Complete the API routes in routes/posts.js.
-app.use('/api/posts', postsRouter);
+  // TODO: Complete the API routes in routes/posts.js.
+  app.use('/api/posts', postsRouter);
 
-app.use((req, res) => {
-  res.status(404).sendFile(path.join(publicDir, '404.html'));
-});
-
-app.use((error, req, res, next) => {
-  console.error(error.stack);
-  res.status(500).sendFile(path.join(publicDir, '500.html'));
-});
-
-connectToDatabase().then(() => {
-  app.listen(PORT, () => {
-    console.log(`Server is running on http://localhost:${PORT}`);
-    console.log('Mounted routers:');
-    console.log('  / -> routes/pages.js');
-    console.log('  /api/posts -> routes/posts.js');
+  app.use((req, res) => {
+    res.status(404).sendFile(path.join(publicDir, '404.html'));
   });
-});
+
+  app.use((error, req, res, next) => {
+    console.error(error.stack);
+    res.status(500).sendFile(path.join(publicDir, '500.html'));
+  });
+
+  //Starts the server and connects to the database, stops the process if connection fails
+  connectToDatabase().then(() => {
+    app.listen(PORT, () => {
+      console.log(`Server is running on http://localhost:${PORT}`);
+      console.log('Mounted routers:');
+      console.log('  / -> routes/pages.js');
+      console.log('  /api/posts -> routes/posts.js');
+    });
+
+  })
+  .catch(() => {
+    process.exit(1); // Exit the process if the database connection fails
+  });
